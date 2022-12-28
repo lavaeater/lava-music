@@ -1,0 +1,47 @@
+package lava.injection
+
+import com.badlogic.gdx.graphics.*
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.utils.viewport.ExtendViewport
+import eater.core.GameSettings
+import eater.core.MainGame
+import eater.injection.InjectionContext
+import ktx.assets.disposeSafely
+import lava.screens.MusicVisualizerScreen
+import lava.screens.SampleExplorerScreen
+import space.earlygrey.shapedrawer.ShapeDrawer
+
+object Context : InjectionContext() {
+    private val shapeDrawerRegion: TextureRegion by lazy {
+        val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
+        pixmap.setColor(Color.WHITE)
+        pixmap.drawPixel(0, 0)
+        val texture = Texture(pixmap) //remember to dispose of later
+        pixmap.disposeSafely()
+        TextureRegion(texture, 0, 0, 1, 1)
+    }
+
+    fun initialize(game: MainGame, debugBox2d: Boolean) {
+        buildContext {
+            val gameSettings = GameSettings()
+            bindSingleton(gameSettings)
+            bindSingleton(game)
+            bindSingleton(PolygonSpriteBatch())
+            bindSingleton(OrthographicCamera())
+            bindSingleton(
+                ExtendViewport(
+                    gameSettings.gameWidth,
+                    gameSettings.gameHeight,
+                    inject<OrthographicCamera>() as Camera
+                )
+            )
+            bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
+            bindSingleton(de.pottgames.tuningfork.Audio.init())
+            bindSingleton(Assets(inject()))
+            bindSingleton(MusicVisualizerScreen(inject()))
+            bindSingleton(SampleExplorerScreen(inject()))
+        }
+    }
+}
