@@ -22,4 +22,5 @@ dependencies {
   api "io.github.libktx:ktx-reflect:$ktxVersion"
   api "io.github.libktx:ktx-scene2d:$ktxVersion"
   api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  implementation project(":gdx-lava")
 }
