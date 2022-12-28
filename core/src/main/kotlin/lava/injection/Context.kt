@@ -10,6 +10,7 @@ import eater.core.MainGame
 import eater.injection.InjectionContext
 import ktx.assets.disposeSafely
 import lava.screens.MusicVisualizerScreen
+import lava.screens.NewSampleExplorerScreen
 import lava.screens.SampleExplorerScreen
 import space.earlygrey.shapedrawer.ShapeDrawer
 
@@ -40,8 +41,8 @@ object Context : InjectionContext() {
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
             bindSingleton(de.pottgames.tuningfork.Audio.init())
             bindSingleton(Assets(inject()))
-            bindSingleton(MusicVisualizerScreen(inject()))
-            bindSingleton(SampleExplorerScreen(inject()))
+//            bindSingleton(MusicVisualizerScreen(inject()))
+            bindSingleton(NewSampleExplorerScreen(inject()))
         }
     }
 }

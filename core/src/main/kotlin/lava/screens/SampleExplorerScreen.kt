@@ -16,7 +16,6 @@ import eater.core.SelectedItemList
 import eater.core.selectedItemListOf
 import eater.extensions.boundLabel
 import eater.injection.InjectionContext.Companion.inject
-import lava.music.ListItem
 import eater.screens.BasicScreen
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -24,7 +23,9 @@ import ktx.actors.stage
 import ktx.collections.lastIndex
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
+import lava.music.ListItem
 import space.earlygrey.shapedrawer.ShapeDrawer
+
 
 class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
 
@@ -32,7 +33,8 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
     private fun getSamples(): ListItem.Directory {
         val root = ListItem.Directory(
             "music-samples",
-            sampleBaseDir, null)
+            sampleBaseDir, null
+        )
         getDirInfo(root)
         return root
     }
@@ -112,8 +114,8 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
         }
     }
 
-    fun getFiles(output: MutableList<ListItem.SoundFile>, input: ListItem.Directory) {
-        for(dir in input.childDirs)
+    private fun getFiles(output: MutableList<ListItem.SoundFile>, input: ListItem.Directory) {
+        for (dir in input.childDirs)
             getFiles(output, dir)
         output.addAll(input.files)
     }
@@ -124,7 +126,7 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
         return selectedItemListOf(*list.toTypedArray())
     }
 
-    private val allSamples by lazy { flattenAllSamples() }
+    private val allSamples get() = flattenAllSamples()
 
     private fun tryToPlay(soundFile: ListItem.SoundFile) {
         var soundWorks = true
@@ -139,7 +141,7 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
 
         if (soundWorks) {
             val sound = sounds[soundFile]!!
-            sound.play(1f,1f)
+            sound.play(1f, 1f)
         } else {
             currentList.items.removeValue(currentList.selected, true)
         }
@@ -295,7 +297,7 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
                             setAlignment(Align.center)
                         }.cell(expandX = true, fillX = true, align = Align.center, colspan = 4, padTop = 25f)
                         row()
-                        boundLabel({allSamples.selectedItem.name})
+                        boundLabel({ allSamples.selectedItem.name })
                         row()
                         boundLabel({ currentNote.toString() })
                         row()

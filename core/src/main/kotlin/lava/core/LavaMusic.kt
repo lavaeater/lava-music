@@ -4,16 +4,17 @@ import eater.core.MainGame
 import eater.injection.InjectionContext.Companion.inject
 import lava.injection.Context
 import lava.screens.MusicVisualizerScreen
+import lava.screens.NewSampleExplorerScreen
 import lava.screens.SampleExplorerScreen
 
 class LavaMusic : MainGame() {
 
     override fun goToGameSelect() {
-        setScreen<SampleExplorerScreen>()
+        setScreen<NewSampleExplorerScreen>()
     }
 
     override fun goToGameScreen() {
-        setScreen<MusicVisualizerScreen>()
+//        setScreen<MusicVisualizerScreen>()
     }
 
     override fun goToGameOver() {
@@ -26,8 +27,8 @@ class LavaMusic : MainGame() {
 
     override fun create() {
         Context.initialize(this, false)
-        addScreen(inject<MusicVisualizerScreen>())
-        addScreen(inject<SampleExplorerScreen>())
-        goToGameScreen()
+//        addScreen(inject<MusicVisualizerScreen>())
+        addScreen(inject<NewSampleExplorerScreen>())
+        goToGameSelect()
     }
 }
