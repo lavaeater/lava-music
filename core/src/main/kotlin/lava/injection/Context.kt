@@ -40,7 +40,7 @@ object Context : InjectionContext() {
                 )
             )
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
-            bindSingleton(de.pottgames.tuningfork.Audio.init())
+//            bindSingleton(de.pottgames.tuningfork.Audio.init())
 //            bindSingleton(MusicVisualizerScreen(inject()))
             bindSingleton(NewSampleExplorerScreen(inject(), inject()))
         }

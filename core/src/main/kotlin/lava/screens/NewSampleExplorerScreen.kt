@@ -2,6 +2,7 @@ package lava.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import eater.core.MainGame
@@ -13,6 +14,7 @@ import ktx.actors.onChange
 import ktx.actors.onKey
 import ktx.actors.onKeyDown
 import ktx.actors.stage
+import ktx.assets.toLocalFile
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
 import lava.injection.Assets
@@ -35,14 +37,14 @@ class NewSampleExplorerScreen(
         listWidgetSample.selected = sampleFile
     }
 
-    fun getItems(selectedIndex: Int): List<SampleFile> {
+    private fun getItems(selectedIndex: Int): List<SampleFile> {
         return allSamples.getNItemsBeforeAndAfterIndex(beforeAndAfter, selectedIndex)
     }
 
     private val allSamples: SelectedItemList<SampleFile> = selectedItemListOf(::selectedItemUpdated)
 
 
-    fun getAllSamples() {
+    private fun getAllSamples() {
         allSamples.clear()
         getSamplesRecursive(allSamples, sampleBaseDir)
     }
@@ -94,7 +96,10 @@ class NewSampleExplorerScreen(
         staaage
     }
 
+    private val samples = mutableMapOf<SampleFile, Sound>()
     private fun tryToPlaySample(selected: SampleFile) {
-        TODO("Not yet implemented")
+        if(!samples.containsKey(selected))
+            samples[selected] = Gdx.audio.newSound(selected.path.toLocalFile())
+        samples[selected]!!.play()
     }
 }
