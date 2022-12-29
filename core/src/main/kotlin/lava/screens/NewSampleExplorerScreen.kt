@@ -5,8 +5,13 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import eater.core.MainGame
+import eater.core.SelectedItemList
+import eater.core.selectedItemListOf
 import eater.input.command
 import eater.screens.ScreenWithStage
+import ktx.actors.onChange
+import ktx.actors.onKey
+import ktx.actors.onKeyDown
 import ktx.actors.stage
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
@@ -17,14 +22,32 @@ class NewSampleExplorerScreen(
     private val assets: Assets
 ) : ScreenWithStage(game, assets.colors["blueish"]!!) {
     private var sampleBaseDir = "projects/games/music-samples-explorer"
-    private val allSamples = mutableListOf<SampleFile>()
+    private val beforeAndAfter = 15
+    private lateinit var listWidgetSample: KListWidget<SampleFile>
+
+    private fun selectedItemUpdated(newIndex: Int, sampleFile: SampleFile) {
+
+        /**
+         * Simply get the next n items from this index
+         */
+        val tempList = getItems(newIndex)
+        listWidgetSample.setItems(tempList.toGdxArray())
+        listWidgetSample.selected = sampleFile
+    }
+
+    fun getItems(selectedIndex: Int): List<SampleFile> {
+        return allSamples.getNItemsBeforeAndAfterIndex(beforeAndAfter, selectedIndex)
+    }
+
+    private val allSamples: SelectedItemList<SampleFile> = selectedItemListOf(::selectedItemUpdated)
+
 
     fun getAllSamples() {
         allSamples.clear()
         getSamplesRecursive(allSamples, sampleBaseDir)
     }
 
-    private fun getSamplesRecursive(sampleList: MutableList<SampleFile>, directoryPath: String) {
+    private fun getSamplesRecursive(sampleList: SelectedItemList<SampleFile>, directoryPath: String) {
         for (file in Gdx.files.external(directoryPath).list()) {
             if (file.isDirectory)
                 getSamplesRecursive(sampleList, file.path())
@@ -36,20 +59,25 @@ class NewSampleExplorerScreen(
 
     override val stage: Stage by lazy {
         getAllSamples()
-        lateinit var listWidgetSample: KListWidget<SampleFile>
         val staaage = stage(batch, viewport).apply {
             actors {
                 container {
                     pad(25f)
-                    scrollPane {
-                        listWidgetSample =
-                            listWidgetOf(allSamples.toTypedArray().toGdxArray(), "samplestyle").apply {
-                                alignment = Align.left
-                                color = assets.colors["dark"]!!
+                    listWidgetSample =
+                        listWidgetOf(getItems(0).toGdxArray(), "samplestyle").apply {
+                            alignment = Align.left
+                            color = assets.colors["dark"]!!
+                            onChange {
+                                allSamples.selectedItem = this.selected
                             }
-                        layout()
-                        setForceScroll(false, true)
-                    }
+                            onKeyDown {
+                                when(it) {
+                                    Input.Keys.PAGE_DOWN -> this.selectedIndex -= 15
+                                    Input.Keys.PAGE_UP -> this.selectedIndex += 15
+                                    Input.Keys.ENTER -> tryToPlaySample(this.selected)
+                                 }
+                            }
+                        }
                     setFillParent(true)
                     pack()
                 }
@@ -58,13 +86,15 @@ class NewSampleExplorerScreen(
         commandMap = command("commands") {
 //            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
 //            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
+//            setDown(Input.Keys.PAGE_UP, "previous item") { listWidgetSample.selectedIndex-=15 }
+//            setDown(Input.Keys.PAGE_DOWN, "previous item") { listWidgetSample.selectedIndex+=15 }
         }
         Gdx.input.inputProcessor = staaage
         listWidgetSample.layout()
         staaage
     }
 
-    override fun show() {
-        super.show()
+    private fun tryToPlaySample(selected: SampleFile) {
+        TODO("Not yet implemented")
     }
 }
