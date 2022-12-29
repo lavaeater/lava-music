@@ -16,9 +16,8 @@ class NewSampleExplorerScreen(
     game: MainGame,
     private val assets: Assets
 ) : ScreenWithStage(game, assets.colors["blueish"]!!) {
-    var sampleBaseDir = "projects/games/music-samples-explorer"
-
-    val allSamples = mutableListOf<SampleFile>()
+    private var sampleBaseDir = "projects/games/music-samples-explorer"
+    private val allSamples = mutableListOf<SampleFile>()
 
     fun getAllSamples() {
         allSamples.clear()
@@ -30,7 +29,7 @@ class NewSampleExplorerScreen(
             if (file.isDirectory)
                 getSamplesRecursive(sampleList, file.path())
             else if (file.extension() == "wav") {
-                sampleList.add(SampleFile(file.nameWithoutExtension(), file.path()))
+                sampleList.add(SampleFile(file.nameWithoutExtension(), file.path(), sampleBaseDir.split("/")))
             }
         }
     }
@@ -41,6 +40,7 @@ class NewSampleExplorerScreen(
         val staaage = stage(batch, viewport).apply {
             actors {
                 container {
+                    pad(25f)
                     scrollPane {
                         listWidgetSample = listWidgetOf(allSamples.toTypedArray().toGdxArray(), "samplestyle").apply {
                             alignment = Align.left
@@ -53,9 +53,11 @@ class NewSampleExplorerScreen(
             }
         }
         commandMap = command("commands") {
-            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++}
-            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex--}
+            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
+            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
         }
+        Gdx.input.inputProcessor = staaage
+        listWidgetSample.layout()
         staaage
     }
 
