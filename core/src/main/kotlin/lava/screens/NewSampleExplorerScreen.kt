@@ -42,10 +42,13 @@ class NewSampleExplorerScreen(
                 container {
                     pad(25f)
                     scrollPane {
-                        listWidgetSample = listWidgetOf(allSamples.toTypedArray().toGdxArray(), "samplestyle").apply {
-                            alignment = Align.left
-                            color = assets.colors["dark"]!!
-                        }
+                        listWidgetSample =
+                            listWidgetOf(allSamples.toTypedArray().toGdxArray(), "samplestyle").apply {
+                                alignment = Align.left
+                                color = assets.colors["dark"]!!
+                            }
+                        layout()
+                        setForceScroll(false, true)
                     }
                     setFillParent(true)
                     pack()
@@ -53,8 +56,8 @@ class NewSampleExplorerScreen(
             }
         }
         commandMap = command("commands") {
-            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
-            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
+//            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
+//            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
         }
         Gdx.input.inputProcessor = staaage
         listWidgetSample.layout()
