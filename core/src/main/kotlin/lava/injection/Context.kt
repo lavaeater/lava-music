@@ -26,8 +26,9 @@ object Context : InjectionContext() {
 
     fun initialize(game: MainGame, debugBox2d: Boolean) {
         buildContext {
-            val gameSettings = GameSettings()
+            val gameSettings = GameSettings(256f)
             bindSingleton(gameSettings)
+            bindSingleton(Assets(inject()))
             bindSingleton(game)
             bindSingleton(PolygonSpriteBatch())
             bindSingleton(OrthographicCamera())
@@ -40,9 +41,8 @@ object Context : InjectionContext() {
             )
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
             bindSingleton(de.pottgames.tuningfork.Audio.init())
-            bindSingleton(Assets(inject()))
 //            bindSingleton(MusicVisualizerScreen(inject()))
-            bindSingleton(NewSampleExplorerScreen(inject()))
+            bindSingleton(NewSampleExplorerScreen(inject(), inject()))
         }
     }
 }

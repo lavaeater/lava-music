@@ -1,28 +1,21 @@
 package lava.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import eater.core.MainGame
-import eater.core.toColor
+import eater.input.command
 import eater.screens.ScreenWithStage
 import ktx.actors.stage
 import ktx.collections.toGdxArray
-import ktx.scene2d.actors
-import ktx.scene2d.container
-import ktx.scene2d.listWidgetOf
+import ktx.scene2d.*
+import lava.injection.Assets
 
 class NewSampleExplorerScreen(
     game: MainGame,
-    val colors: Map<String, Color> = arrayOf(
-        "414858",
-        "C7CCD4",
-        "80585B",
-        "674F5C",
-        "A8C0C8"
-    ).associateWith { it.toColor() }
-) : ScreenWithStage(game, colors["A8C0C8"]!!) {
+    private val assets: Assets
+) : ScreenWithStage(game, assets.colors["blueish"]!!) {
     var sampleBaseDir = "projects/games/music-samples-explorer"
 
     val allSamples = mutableListOf<SampleFile>()
@@ -42,21 +35,31 @@ class NewSampleExplorerScreen(
         }
     }
 
-
     override val stage: Stage by lazy {
         getAllSamples()
-        stage(batch, viewport).apply {
+        lateinit var listWidgetSample: KListWidget<SampleFile>
+        val staaage = stage(batch, viewport).apply {
             actors {
                 container {
-                    listWidgetOf(allSamples.toTypedArray().toGdxArray()).apply {
-                        alignment = Align.center
-
+                    scrollPane {
+                        listWidgetSample = listWidgetOf(allSamples.toTypedArray().toGdxArray(), "samplestyle").apply {
+                            alignment = Align.left
+                            color = assets.colors["dark"]!!
+                        }
                     }
                     setFillParent(true)
                     pack()
                 }
             }
         }
+        commandMap = command("commands") {
+            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++}
+            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex--}
+        }
+        staaage
     }
 
+    override fun show() {
+        super.show()
+    }
 }
