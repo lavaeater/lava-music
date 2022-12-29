@@ -3,7 +3,12 @@ package lava.screens
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SampleFile(val name: String, val path: String) {
+class NewSampler() {
+    
+}
+
+@Serializable
+data class SampleFile(var name: String, var path: String) {
     val tags = path.split("/")-path.split("/").last()
 
     fun extractTags(): String {
