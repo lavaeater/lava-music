@@ -14,7 +14,7 @@ class LavaMusic : MainGame() {
     }
 
     override fun goToGameScreen() {
-//        setScreen<MusicVisualizerScreen>()
+        setScreen<MusicVisualizerScreen>()
     }
 
     override fun goToGameOver() {
@@ -27,7 +27,7 @@ class LavaMusic : MainGame() {
 
     override fun create() {
         Context.initialize(this, false)
-//        addScreen(inject<MusicVisualizerScreen>())
+        addScreen(inject<MusicVisualizerScreen>())
         addScreen(inject<NewSampleExplorerScreen>())
         goToGameSelect()
     }

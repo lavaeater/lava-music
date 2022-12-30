@@ -18,14 +18,20 @@ import ktx.assets.toExternalFile
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
 import lava.injection.Assets
+import lava.music.SamplersManager
+import lava.music.SimpleSampler
+import lava.music.SoundScheduler
 
 class NewSampleExplorerScreen(
     game: MainGame,
-    private val assets: Assets
+    private val assets: Assets,
+    private val samplersManager: SamplersManager,
+    private val soundScheduler: SoundScheduler
 ) : ScreenWithStage(game, assets.colors["blueish"]!!) {
     private var sampleBaseDir = "projects/games/music-samples-explorer"
     private val beforeAndAfter = 15
-    private lateinit var listWidgetSample: KListWidget<SampleFile>
+    private lateinit var samplesList: KListWidget<SampleFile>
+    private lateinit var samplersList: KListWidget<SimpleSampler>
 
     private fun selectedItemUpdated(newIndex: Int, sampleFile: SampleFile) {
 
@@ -33,8 +39,8 @@ class NewSampleExplorerScreen(
          * Simply get the next n items from this index
          */
         val tempList = getItems(newIndex)
-        listWidgetSample.setItems(tempList.toGdxArray())
-        listWidgetSample.selected = sampleFile
+        samplesList.setItems(tempList.toGdxArray())
+        samplesList.selected = sampleFile
     }
 
     private fun getItems(selectedIndex: Int): List<SampleFile> {
@@ -63,9 +69,9 @@ class NewSampleExplorerScreen(
         getAllSamples()
         val staaage = stage(batch, viewport).apply {
             actors {
-                container {
+                table {
                     pad(25f)
-                    listWidgetSample =
+                    samplesList =
                         listWidgetOf(getItems(0).toGdxArray(), "samplestyle").apply {
                             alignment = Align.left
                             color = assets.colors["dark"]!!
@@ -78,14 +84,30 @@ class NewSampleExplorerScreen(
                         }
                     setFillParent(true)
                     pack()
+                }.apply {
+                    align(Align.left)
+                }
+                table {
+                    pad(25f)
+                    samplersList = listWidgetOf<SimpleSampler>(emptyArray<SimpleSampler>().toGdxArray(), "samplestyle").apply {
+                        alignment = Align.left
+                        color = assets.colors["dark"]!!
+                    }
+                    setFillParent(true)
+                    pack()
+                }.apply {
+                    align(Align.right)
                 }
             }
         }
         commandMap = command("commands") {
-            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
-            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
-            setDown(Input.Keys.PAGE_UP, "previous item") { listWidgetSample.selectedIndex -= 15 }
-            setDown(Input.Keys.PAGE_DOWN, "previous item") { listWidgetSample.selectedIndex += 15 }
+            setDown(Input.Keys.DOWN, "next item") { samplesList.selectedIndex++ }
+            setDown(Input.Keys.UP, "previous item") { samplesList.selectedIndex-- }
+            setDown(Input.Keys.PAGE_UP, "previous item") { samplesList.selectedIndex -= 15 }
+            setDown(Input.Keys.PAGE_DOWN, "previous item") { samplesList.selectedIndex += 15 }
+            setDown(Input.Keys.SPACE, "play item") {tryToPlaySample(samplesList.selected, samplesList.selectedIndex)}
+            setDown(Input.Keys.ENTER, "play item") { addSampler(samplesList.selected, samplesList.selectedIndex)}
+            setDown(Input.Keys.V, "go to visualizer") { mainGame.goToGameScreen()}
 //            setDown(Input.Keys.B, "choose base folder") {
 //                scene2d.dialog("Enter root folder, below ${Gdx.files.externalStoragePath}") {
 //                    titleTable.addActor(scene2d.table {
@@ -114,8 +136,15 @@ class NewSampleExplorerScreen(
 //            }
         }
 //        Gdx.input.inputProcessor = staaage
-        listWidgetSample.layout()
+        samplesList.layout()
         staaage
+    }
+
+    private fun addSampler(sampleFile: SampleFile, selectedIndex: Int) {
+        if(!samplersManager.samplers.containsKey(sampleFile))
+            samplersManager.samplers[sampleFile] = SimpleSampler("${sampleFile.tags.last()}-${sampleFile.name}", Gdx.audio.newSound(sampleFile.path.toExternalFile()),soundScheduler)
+
+        samplersList.setItems(samplersManager.samplers.values.toGdxArray())
     }
 
     private val samples = mutableMapOf<SampleFile, Sound>()
@@ -126,7 +155,7 @@ class NewSampleExplorerScreen(
             } catch (someException: Exception) {
                 samples.remove(selected)
                 allSamples.remove(selected)
-                listWidgetSample.selectedIndex += 1
+                samplesList.selectedIndex += 1
             }
         }
         samples[selected]?.play()
