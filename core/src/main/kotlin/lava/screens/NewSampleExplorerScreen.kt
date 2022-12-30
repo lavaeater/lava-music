@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align
 import eater.core.MainGame
 import eater.core.SelectedItemList
 import eater.core.selectedItemListOf
+import eater.input.KeyPress
 import eater.input.command
 import eater.screens.ScreenWithStage
 import ktx.actors.onChange
@@ -72,11 +73,7 @@ class NewSampleExplorerScreen(
                                 allSamples.selectedItem = this.selected
                             }
                             onKeyDown {
-                                when(it) {
-                                    Input.Keys.PAGE_DOWN -> this.selectedIndex -= 15
-                                    Input.Keys.PAGE_UP -> this.selectedIndex += 15
-                                    Input.Keys.ENTER -> tryToPlaySample(this.selected, this.selectedIndex)
-                                 }
+                                commandMap.execute(it, KeyPress.Down)
                             }
                         }
                     setFillParent(true)
@@ -85,19 +82,45 @@ class NewSampleExplorerScreen(
             }
         }
         commandMap = command("commands") {
-//            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
-//            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
-//            setDown(Input.Keys.PAGE_UP, "previous item") { listWidgetSample.selectedIndex-=15 }
-//            setDown(Input.Keys.PAGE_DOWN, "previous item") { listWidgetSample.selectedIndex+=15 }
+            setDown(Input.Keys.DOWN, "next item") { listWidgetSample.selectedIndex++ }
+            setDown(Input.Keys.UP, "previous item") { listWidgetSample.selectedIndex-- }
+            setDown(Input.Keys.PAGE_UP, "previous item") { listWidgetSample.selectedIndex -= 15 }
+            setDown(Input.Keys.PAGE_DOWN, "previous item") { listWidgetSample.selectedIndex += 15 }
+//            setDown(Input.Keys.B, "choose base folder") {
+//                scene2d.dialog("Enter root folder, below ${Gdx.files.externalStoragePath}") {
+//                    titleTable.addActor(scene2d.table {
+//                        label("Enter root folder, below ${Gdx.files.externalStoragePath}").cell(
+//                            grow = true,
+//                            align = Align.center
+//                        )
+//                        setFillParent(true)
+//                    })
+//
+//                    contentTable.addActor(scene2d.table {
+//                        textField(sampleBaseDir).cell(grow = true)
+//                        row()
+//                        setFillParent(true)
+//                    })
+//                    buttonTable.addActor(scene2d.horizontalGroup {
+//                        button {
+//                            label("what")
+//                        }
+//                        setFillParent(true)
+//                    })
+//                }.apply {
+//                    show(staaage)
+//                }
+//
+//            }
         }
-        Gdx.input.inputProcessor = staaage
+//        Gdx.input.inputProcessor = staaage
         listWidgetSample.layout()
         staaage
     }
 
     private val samples = mutableMapOf<SampleFile, Sound>()
     private fun tryToPlaySample(selected: SampleFile, selectedIndex: Int) {
-        if(!samples.containsKey(selected)) {
+        if (!samples.containsKey(selected)) {
             try {
                 samples[selected] = Gdx.audio.newSound(selected.path.toExternalFile())
             } catch (someException: Exception) {
