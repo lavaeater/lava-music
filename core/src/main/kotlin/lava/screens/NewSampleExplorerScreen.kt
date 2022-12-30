@@ -11,10 +11,9 @@ import eater.core.selectedItemListOf
 import eater.input.command
 import eater.screens.ScreenWithStage
 import ktx.actors.onChange
-import ktx.actors.onKey
 import ktx.actors.onKeyDown
 import ktx.actors.stage
-import ktx.assets.toLocalFile
+import ktx.assets.toExternalFile
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
 import lava.injection.Assets
@@ -76,7 +75,7 @@ class NewSampleExplorerScreen(
                                 when(it) {
                                     Input.Keys.PAGE_DOWN -> this.selectedIndex -= 15
                                     Input.Keys.PAGE_UP -> this.selectedIndex += 15
-                                    Input.Keys.ENTER -> tryToPlaySample(this.selected)
+                                    Input.Keys.ENTER -> tryToPlaySample(this.selected, this.selectedIndex)
                                  }
                             }
                         }
@@ -97,9 +96,16 @@ class NewSampleExplorerScreen(
     }
 
     private val samples = mutableMapOf<SampleFile, Sound>()
-    private fun tryToPlaySample(selected: SampleFile) {
-        if(!samples.containsKey(selected))
-            samples[selected] = Gdx.audio.newSound(selected.path.toLocalFile())
-        samples[selected]!!.play()
+    private fun tryToPlaySample(selected: SampleFile, selectedIndex: Int) {
+        if(!samples.containsKey(selected)) {
+            try {
+                samples[selected] = Gdx.audio.newSound(selected.path.toExternalFile())
+            } catch (someException: Exception) {
+                samples.remove(selected)
+                allSamples.remove(selected)
+                listWidgetSample.selectedIndex += 1
+            }
+        }
+        samples[selected]?.play()
     }
 }
