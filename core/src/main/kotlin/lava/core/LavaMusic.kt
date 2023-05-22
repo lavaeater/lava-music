@@ -1,7 +1,7 @@
 package lava.core
 
-import eater.core.MainGame
-import eater.injection.InjectionContext.Companion.inject
+import twodee.core.MainGame
+import twodee.injection.InjectionContext.Companion.inject
 import lava.injection.Context
 import lava.screens.MusicVisualizerScreen
 import lava.screens.NewMusicVisualizerScreen

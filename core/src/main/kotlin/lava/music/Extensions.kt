@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import de.pottgames.tuningfork.Audio
 import de.pottgames.tuningfork.WaveLoader
-import eater.injection.InjectionContext.Companion.inject
+import twodee.injection.InjectionContext.Companion.inject
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.math.pow

@@ -1,5 +1,5 @@
 package lava.music
 
-import eater.messaging.IMessage
+import twodee.messaging.IMessage
 
 data class Beat(val timeBars: Float, val sixteenth: Int, val hitTime: Float): IMessage

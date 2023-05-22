@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import eater.core.GameSettings
-import eater.core.MainGame
-import eater.injection.InjectionContext
+import twodee.core.GameSettings
+import twodee.core.MainGame
+import twodee.injection.InjectionContext
 import ktx.assets.disposeSafely
 import lava.music.SamplersManager
 import lava.music.SoundScheduler

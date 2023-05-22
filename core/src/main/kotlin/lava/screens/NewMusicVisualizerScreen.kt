@@ -1,8 +1,8 @@
 package lava.screens
 
 import com.badlogic.gdx.scenes.scene2d.Stage
-import eater.core.MainGame
-import eater.screens.ScreenWithStage
+import twodee.core.MainGame
+import twodee.screens.ScreenWithStage
 import ktx.actors.stage
 import ktx.scene2d.actors
 import ktx.scene2d.label

@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType.Bitmap
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import eater.core.GameSettings
-import eater.core.toColor
-import eater.injection.InjectionContext
+import twodee.core.GameSettings
+import twodee.core.toColor
+import twodee.injection.InjectionContext
 import ktx.assets.DisposableContainer
 import ktx.assets.DisposableRegistry
 import ktx.assets.disposeSafely

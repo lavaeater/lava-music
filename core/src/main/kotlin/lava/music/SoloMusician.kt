@@ -1,7 +1,7 @@
 package lava.music
 
 import com.badlogic.gdx.math.MathUtils.*
-import eater.core.selectedItemListOf
+import twodee.core.selectedItemListOf
 import ktx.math.random
 
 class SoloMusician(name: String, inputSamplers: List<Sampler>, private val recordBars: Int = 4, private val repeats: Int = 1) :
