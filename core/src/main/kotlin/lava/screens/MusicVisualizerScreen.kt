@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.Viewport
 import twodee.core.MainGame
 import twodee.extensions.boundLabel
 import twodee.extensions.boundProgressBar
@@ -22,8 +21,8 @@ import twodee.input.command
 import twodee.screens.BasicScreen
 import ktx.actors.stage
 import ktx.scene2d.*
-import lava.music.*
 import space.earlygrey.shapedrawer.ShapeDrawer
+import twodee.music.*
 
 class MusicVisualizerScreen(
     game: MainGame,

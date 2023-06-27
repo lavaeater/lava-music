@@ -23,7 +23,7 @@ import ktx.assets.toExternalFile
 import ktx.collections.lastIndex
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
-import lava.music.ListItem
+import twodee.music.ListItem
 import space.earlygrey.shapedrawer.ShapeDrawer
 import twodee.input.CommandMap
 

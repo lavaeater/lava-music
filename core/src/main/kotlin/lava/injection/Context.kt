@@ -9,11 +9,10 @@ import twodee.core.GameSettings
 import twodee.core.MainGame
 import twodee.injection.InjectionContext
 import ktx.assets.disposeSafely
-import lava.music.SamplersManager
-import lava.music.SoundScheduler
-import lava.music.SoundsToPlayScheduler
+import twodee.music.SamplersManager
+import twodee.music.SoundScheduler
+import twodee.music.SoundsToPlayScheduler
 import lava.screens.MusicVisualizerScreen
-import lava.screens.NewSampleExplorerScreen
 import lava.screens.SampleExplorerScreen
 import space.earlygrey.shapedrawer.ShapeDrawer
 

@@ -21,9 +21,10 @@ import ktx.assets.toExternalFile
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
 import lava.injection.Assets
-import lava.music.SamplersManager
-import lava.music.SimpleSampler
-import lava.music.SoundScheduler
+import twodee.music.SampleFile
+import twodee.music.SamplersManager
+import twodee.music.SimpleSampler
+import twodee.music.SoundScheduler
 
 class NewSampleExplorerScreen(
     game: MainGame,
