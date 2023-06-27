@@ -1,5 +1,5 @@
 package lava.music
 
-import de.pottgames.tuningfork.SoundSource
+import com.badlogic.gdx.audio.Sound
 
-data class PlayableNote(val soundSource: SoundSource, val pitch: Float, val targetTime: Float)
+data class PlayableNote(val soundSource: Sound, val pitch: Float, val targetTime: Float)

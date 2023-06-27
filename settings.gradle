@@ -1,1 +1,1 @@
-include 'gdx-lava','android', 'core', 'ios', 'lwjgl3'
+include 'gdx-lava', 'core', 'lwjgl3'

@@ -178,11 +178,12 @@ class MusicVisualizerScreen(
         val soundsToPlayRightNowIGuess = ToPlay.soundsToPlay.filter { it.targetTime < timePiece.time }
         ToPlay.soundsToPlay.removeAll(soundsToPlayRightNowIGuess)
         for (sound in soundsToPlayRightNowIGuess) {
-            if (sound.soundSource.isPlaying)
-                sound.soundSource.stop()
-            sound.soundSource.setPitch(sound.pitch)
-            sound.soundSource.setVolume(volume)
-            sound.soundSource.play()
+            //Cannot check if sounds are playing, mate
+//            if (sound.soundSource.)
+//                sound.soundSource.stop()
+//            sound.soundSource.setPitch(sound.pitch)
+//            sound.soundSource.setVolume(volume)
+            sound.soundSource.play(volume, sound.pitch, 0f)
         }
     }
 

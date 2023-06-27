@@ -1,7 +1,6 @@
 package lava.music
 
 import com.badlogic.gdx.audio.Sound
-import de.pottgames.tuningfork.SoundSource
 import lava.screens.SampleFile
 
 class SamplersManager {
@@ -31,7 +30,7 @@ class SimpleSampler(val name: String, private val sound: Sound, private val soun
     }
 }
 
-class Sampler(private val soundSource: SoundSource) {
+class Sampler(private val soundSource: Sound) {
     fun play(midiNoteDiff: Int, scheduledTime: Float) {
         ToPlay.soundsToPlay.add(PlayableNote(soundSource, midiNoteDiff.toPitch(), scheduledTime))
     }

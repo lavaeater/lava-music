@@ -2,19 +2,13 @@ package lava.music
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
-import de.pottgames.tuningfork.Audio
-import de.pottgames.tuningfork.WaveLoader
-import twodee.injection.InjectionContext.Companion.inject
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import ktx.assets.toExternalFile
 import kotlin.math.pow
 
 fun <K, V> Map<K, V>.reversed() = HashMap<V, K>().also { newMap ->
     entries.forEach { newMap[it.value] = it.key }
-}
-
-fun audio(): Audio {
-    return inject()
 }
 
 fun loadSampler(name: String, instrument: String, baseDir:String): Sampler {
@@ -25,7 +19,7 @@ fun loadSampler(name: String, instrument: String, baseDir:String): Sampler {
     }
     val instruments = InstrumentsCache.instruments[instrument]!!
     val soundFile = instruments.first { it.name == name }
-    return Sampler(audio().obtainSource(WaveLoader.load(Gdx.files.external("$baseDir/${soundFile.path}"))))
+    return Sampler(Gdx.audio.newSound("$baseDir/${soundFile.path}".toExternalFile()))
 }
 
 fun generateBeat(midiNoteSpan: IntRange, top: Int, bottom: Int, shift: Int = 0, strengthRange: IntRange = (3..8)): MutableMap<Int, Note> {

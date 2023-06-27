@@ -2,6 +2,7 @@ package lava.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.math.MathUtils.floor
@@ -9,10 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.badlogic.gdx.utils.viewport.Viewport
-import de.pottgames.tuningfork.Audio
-import de.pottgames.tuningfork.SoundBuffer
-import de.pottgames.tuningfork.WaveLoader
 import twodee.core.MainGame
 import twodee.core.SelectedItemList
 import twodee.core.selectedItemListOf
@@ -22,6 +19,7 @@ import twodee.screens.BasicScreen
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import ktx.actors.stage
+import ktx.assets.toExternalFile
 import ktx.collections.lastIndex
 import ktx.collections.toGdxArray
 import ktx.scene2d.*
@@ -96,9 +94,7 @@ class SampleExplorerScreen(
             currentList.selectedIndex++
     }
 
-    private val sounds = mutableMapOf<ListItem.SoundFile, SoundBuffer>()
-
-    private val audio by lazy { inject<Audio>() }
+    private val sounds = mutableMapOf<ListItem.SoundFile, Sound>()
 
     private fun selectCurrentItemInList() {
         when (currentList.selected) {
@@ -136,7 +132,7 @@ class SampleExplorerScreen(
 
         if (!sounds.containsKey(soundFile)) {
             try {
-                sounds[soundFile] = WaveLoader.load(Gdx.files.external(soundFile.path))
+                sounds[soundFile] = Gdx.audio.newSound(soundFile.path.toExternalFile())
             } catch (e: Exception) {
                 soundWorks = false
             }
@@ -144,7 +140,7 @@ class SampleExplorerScreen(
 
         if (soundWorks) {
             val sound = sounds[soundFile]!!
-            sound.play(1f, 1f)
+            sound.play(1f, 1f, 0f)
         } else {
             currentList.items.removeValue(currentList.selected, true)
         }
