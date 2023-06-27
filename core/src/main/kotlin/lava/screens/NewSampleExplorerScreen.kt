@@ -49,7 +49,7 @@ class NewSampleExplorerScreen(
     }
 
     private fun getItems(selectedIndex: Int): List<SampleFile> {
-        return allSamples.getNItemsBeforeAndAfterIndex(beforeAndAfter, selectedIndex)
+        return if(allSamples.any()) allSamples.getNItemsBeforeAndAfterIndex(beforeAndAfter, selectedIndex) else emptyList()
     }
 
     private val allSamples: SelectedItemList<SampleFile> = selectedItemListOf(::selectedItemUpdated)

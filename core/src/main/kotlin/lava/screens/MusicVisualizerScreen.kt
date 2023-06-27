@@ -47,7 +47,7 @@ class MusicVisualizerScreen(
         }
     }
 
-    private val sampleBaseDir = "projects/games/music-samples-explorer"
+    private val sampleBaseDir = "projects/no-backup/music-samples-explorer"
 
     private val kickSampler by lazy { loadSampler("Kick", "drums-1.json", sampleBaseDir) }
     private val snareSampler by lazy { loadSampler("Snare", "drums-1.json", sampleBaseDir) }
@@ -164,12 +164,17 @@ class MusicVisualizerScreen(
         stage = getStage()
     }
 
-    override fun renderBatch(delta: Float) {
+    override fun render(delta: Float) {
+        clearScreenUpdateCamera(delta)
         timePiece.update(delta)
         stage.act(delta)
         stage.draw()
         signalConductor.update()
         playSounds()
+    }
+
+    override fun renderBatch(delta: Float) {
+
     }
 
     private var volume = 0.5f

@@ -5,15 +5,16 @@ import twodee.injection.InjectionContext.Companion.inject
 import lava.injection.Context
 import lava.screens.MusicVisualizerScreen
 import lava.screens.NewSampleExplorerScreen
+import lava.screens.SampleExplorerScreen
 
 class LavaMusic : MainGame() {
 
     override fun goToGameSelect() {
-        setScreen<NewSampleExplorerScreen>()
+        setScreen<MusicVisualizerScreen>()
     }
 
     override fun goToGameScreen() {
-        setScreen<MusicVisualizerScreen>()
+        setScreen<SampleExplorerScreen>()
     }
 
     override fun goToGameOver() {
@@ -27,7 +28,7 @@ class LavaMusic : MainGame() {
     override fun create() {
         Context.initialize(this, false)
         addScreen(inject<MusicVisualizerScreen>())
-        addScreen(inject<NewSampleExplorerScreen>())
+        addScreen(inject<SampleExplorerScreen>())
         goToGameSelect()
     }
 }

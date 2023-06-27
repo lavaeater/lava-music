@@ -14,6 +14,7 @@ import lava.music.SoundScheduler
 import lava.music.SoundsToPlayScheduler
 import lava.screens.MusicVisualizerScreen
 import lava.screens.NewSampleExplorerScreen
+import lava.screens.SampleExplorerScreen
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 object Context : InjectionContext() {
@@ -45,7 +46,8 @@ object Context : InjectionContext() {
             bindSingleton(SoundsToPlayScheduler() as SoundScheduler)
             bindSingleton(SamplersManager())
             bindSingleton(MusicVisualizerScreen(inject(),inject(), inject()))
-            bindSingleton(NewSampleExplorerScreen(inject(), inject(), inject(), inject(), inject(), inject()))
+            bindSingleton(SampleExplorerScreen(inject(),inject(), inject()))
+//            bindSingleton(NewSampleExplorerScreen(inject(), inject(), inject(), inject(), inject(), inject()))
         }
     }
 }

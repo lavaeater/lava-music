@@ -25,6 +25,7 @@ import ktx.collections.toGdxArray
 import ktx.scene2d.*
 import lava.music.ListItem
 import space.earlygrey.shapedrawer.ShapeDrawer
+import twodee.input.CommandMap
 
 
 class SampleExplorerScreen(
@@ -38,7 +39,7 @@ class SampleExplorerScreen(
     batch
 ) {
 
-    private val sampleBaseDir = "projects/games/music-samples-explorer"
+    private val sampleBaseDir = "projects/no-backup/music-samples-explorer"
     private fun getSamples(): ListItem.Directory {
         val root = ListItem.Directory(
             "music-samples",
@@ -149,6 +150,7 @@ class SampleExplorerScreen(
     private val selectedSamples = mutableSetOf<ListItem.SoundFile>()
 
     private fun setUpCommands() {
+        commandMap = CommandMap("Do stuff")
         commandMap.setUp(Keys.TAB, "Switch lists") {
             switchList()
         }
