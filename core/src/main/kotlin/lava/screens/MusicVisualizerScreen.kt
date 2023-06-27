@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.ai.GdxAI
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.math.MathUtils.clamp
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -23,7 +25,10 @@ import ktx.scene2d.*
 import lava.music.*
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class MusicVisualizerScreen(game: MainGame) : BasicScreen(game) {
+class MusicVisualizerScreen(
+    game: MainGame,
+    camera: OrthographicCamera,
+    batch: PolygonSpriteBatch) : BasicScreen(game, camera, ExtendViewport(600f, 400f, camera), batch) {
 
     init {
         commandMap = command("MusicVisualizer") {
@@ -43,8 +48,6 @@ class MusicVisualizerScreen(game: MainGame) : BasicScreen(game) {
     }
 
     private val sampleBaseDir = "projects/games/music-samples-explorer"
-
-    override val viewport: Viewport = ExtendViewport(400f, 600f)
 
     private val kickSampler by lazy { loadSampler("Kick", "drums-1.json", sampleBaseDir) }
     private val snareSampler by lazy { loadSampler("Snare", "drums-1.json", sampleBaseDir) }
@@ -161,8 +164,7 @@ class MusicVisualizerScreen(game: MainGame) : BasicScreen(game) {
         stage = getStage()
     }
 
-    override fun render(delta: Float) {
-        super.render(delta)
+    override fun renderBatch(delta: Float) {
         timePiece.update(delta)
         stage.act(delta)
         stage.draw()

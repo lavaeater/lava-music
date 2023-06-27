@@ -12,7 +12,7 @@ import ktx.assets.disposeSafely
 import lava.music.SamplersManager
 import lava.music.SoundScheduler
 import lava.music.SoundsToPlayScheduler
-import lava.screens.NewMusicVisualizerScreen
+import lava.screens.MusicVisualizerScreen
 import lava.screens.NewSampleExplorerScreen
 import space.earlygrey.shapedrawer.ShapeDrawer
 
@@ -44,8 +44,8 @@ object Context : InjectionContext() {
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
             bindSingleton(SoundsToPlayScheduler() as SoundScheduler)
             bindSingleton(SamplersManager())
-            bindSingleton(NewMusicVisualizerScreen(inject(), inject(), inject()))
-            bindSingleton(NewSampleExplorerScreen(inject(), inject(), inject(), inject()))
+            bindSingleton(MusicVisualizerScreen(inject(),inject(), inject()))
+            bindSingleton(NewSampleExplorerScreen(inject(), inject(), inject(), inject(), inject(), inject()))
         }
     }
 }

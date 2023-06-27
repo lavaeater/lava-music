@@ -3,8 +3,11 @@ package lava.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import twodee.core.MainGame
 import twodee.core.SelectedItemList
 import twodee.core.selectedItemListOf
@@ -26,8 +29,10 @@ class NewSampleExplorerScreen(
     game: MainGame,
     private val assets: Assets,
     private val samplersManager: SamplersManager,
-    private val soundScheduler: SoundScheduler
-) : ScreenWithStage(game, assets.colors["blueish"]!!) {
+    private val soundScheduler: SoundScheduler,
+    camera: OrthographicCamera,
+    batch: PolygonSpriteBatch
+) : ScreenWithStage(game, ExtendViewport(400f, 600f, camera), camera, batch) {
     private var sampleBaseDir = "projects/games/music-samples-explorer"
     private val beforeAndAfter = 15
     private lateinit var samplesList: KListWidget<SampleFile>
@@ -138,6 +143,10 @@ class NewSampleExplorerScreen(
 //        Gdx.input.inputProcessor = staaage
         samplesList.layout()
         staaage
+    }
+
+    override fun renderBatch(delta: Float) {
+        //No op for you!
     }
 
     private fun addSampler(sampleFile: SampleFile, selectedIndex: Int) {

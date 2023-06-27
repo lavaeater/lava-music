@@ -2,6 +2,8 @@ package lava.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.math.MathUtils.floor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -27,7 +29,16 @@ import lava.music.ListItem
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 
-class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
+class SampleExplorerScreen(
+    game: MainGame,
+    camera: OrthographicCamera,
+    batch: PolygonSpriteBatch
+) : BasicScreen(
+    game,
+    camera,
+    ExtendViewport(400f, 600f, camera),
+    batch
+) {
 
     private val sampleBaseDir = "projects/games/music-samples-explorer"
     private fun getSamples(): ListItem.Directory {
@@ -44,14 +55,6 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
     var currentNote = 0 //72 should equal a pitch of around 1f, but I have no idea
 
     val pitchSpan = (60 - 72)..(84 - 72)
-
-    /*
-    I have an idea.
-
-    The min pitch is 0.5, the max 2.0. This equals... it's so low, like the root from 2
-     */
-
-    override val viewport: Viewport = ExtendViewport(400f, 600f)
 
     private val sampleStore by lazy { getSamples() }
     private var currentDirectory = sampleStore
@@ -276,6 +279,9 @@ class SampleExplorerScreen(game: MainGame) : BasicScreen(game) {
         super.render(delta)
         stage.act(delta)
         stage.draw()
+    }
+
+    override fun renderBatch(delta: Float) {
     }
 
 
